@@ -17,12 +17,33 @@ class Order extends Model
         'delivery_method_id',
         'payment_type_id',
         'sum',
+        'status_id',
         'products',
         'address'
+    ];
+
+    protected $casts = [
+        'products' => 'array',
+        'address' => 'array',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function paymentType(): BelongsTo
+    {
+        return $this->belongsTo(PaymentType::class);
+    }
+
+    public function deliveryMethod(): BelongsTo
+    {
+        return $this->belongsTo(DeliveryMethod::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
     }
 }

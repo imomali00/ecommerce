@@ -52,11 +52,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
-    public function favorites(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class);
-    }
-
     public function addresses(): HasMany
     {
         return $this->hasMany(UserAddress::class);
@@ -70,5 +65,20 @@ class User extends Authenticatable
     public function hasFavorites($favorite_id)
     {
         return $this->favorites()->where('product_id', $favorite_id)->exists();
+    }
+
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function settings()
+    {
+        return $this->hasMany(UserSetting::class, 'user_id', 'id');
     }
 }

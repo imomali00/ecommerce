@@ -4,17 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderResource;
+use App\Http\Resources\ProductResource;
+use App\Models\DeliveryMethod;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Stock;
+use App\Models\UserAddress;
+use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return auth()->user()->orders();
+        if (request()->has('status_id')) {
+            return $this->response([
+                OrderResource::collection(auth()->user()->orders()->where('status_id',
+                    request('status_id'))->paginate(10))
+            ]);
+        }
+        return $this->response([OrderResource::collection(auth()->user()->orders()->paginate(10))]);
     }
 
     /**
@@ -28,28 +40,73 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request): JsonResponse
     {
-        $sum = 100;
-        $products = Product::query()->limit(2)->get();
-        auth()->user()->orders()->create([
-            'comment' => $request->comment,
-            'delivery_method_id' => $request->delivery_method_id,
-            'payment_type_id' => $request->payment_type_id,
-            'address_id' => $request->address_id,
-            'sum' => $sum,
-            'products' => $products
-        ]);
+        $sum = 0;
+        $products = [];
+        $notFoundProducts = [];
+        $address = UserAddress::find($request->address_id);
+        $deliveryMethod = DeliveryMethod::findOrFail($request->delivery_method_id);
 
-        return $request;
+        foreach ($request['products'] as $requestProduct) {
+            $product = Product::with('stocks')->findOrFail($requestProduct['product_id']);
+            $product->quantity = $requestProduct['quantity'];
+
+            if (
+                $product->stocks()->find($requestProduct['stock_id']) &&
+                $product->stocks()->find($requestProduct['stock_id'])->quantity >= $requestProduct['quantity']
+            ) {
+
+                $productWithStock = $product->withStock($requestProduct['stock_id']);
+                $productResource = (new ProductResource($productWithStock))->resolve();
+
+
+                $sum += $productResource['discounted_price'] ?? $productResource['price'];
+                $sum += $productWithStock->stocks[0]->added_price;
+                $products[] = $productResource;
+
+            } else {
+                $requestProduct['we_have'] = $product->stocks()->find($requestProduct['stock_id'])->quantity;
+                $notFoundProducts[] = $requestProduct;
+            }
+        }
+
+        if ($notFoundProducts === [] && $products !== [] && $sum !== 0) {
+            $sum += $deliveryMethod->sum;
+
+            $order = auth()->user()->orders()->create([
+                'comment' => $request->comment,
+                'delivery_method_id' => $request->delivery_method_id,
+                'payment_type_id' => $request->payment_type_id,
+                'sum' => $sum,
+                'status_id' => in_array($request['payment_type_id'], [1, 2]) ? 1 : 10,
+                'address' => $address,
+                'products' => $products,
+            ]);
+
+            if ($order) {
+                foreach ($products as $product) {
+                    $stock = Stock::find($product['inventory'][0]['id']);
+                    $stock->quantity -= $product['order_quantity'];
+                    $stock->save();
+                }
+
+                // Return a success JSON response
+            }
+            return $this->success('Order created', ['order' => $order,]);
+        } else {
+            return $this->error('Some products not found or do not have inventory',
+                ['not_found_products' => $notFoundProducts,]);
+        }
     }
+
 
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order): JsonResponse
     {
-        //
+        return $this->response(new OrderResource($order));
     }
 
     /**
