@@ -11,9 +11,10 @@ class Status extends Model
 {
     use HasFactory, HasTranslations;
 
-    public array $translatable = ['name'];
+    public array $translatable = ["name"];
 
-    protected $fillable = ['name', 'for'];
+    protected $fillable = ["name", "for"];
+
 
     public function orders(): HasMany
     {

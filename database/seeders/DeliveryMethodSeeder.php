@@ -3,14 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\DeliveryMethod;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DeliveryMethodSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DeliveryMethod::create([
@@ -19,32 +15,34 @@ class DeliveryMethodSeeder extends Seeder
                 'ru' => 'Бесплатно',
             ],
             'estimated_time' => [
-                'uz' => '2 kun',
-                'ru' => '2 день',
+                'uz' => '5 kun',
+                'ru' => 'ru 5 kun',
             ],
-            'sum' => 0
+            'sum' => 0,
         ]);
+
         DeliveryMethod::create([
             'name' => [
-                'uz' => 'Standard',
-                'ru' => 'Стандард',
+                'uz' => 'Standart',
+                'ru' => 'Standart',
             ],
             'estimated_time' => [
                 'uz' => '3 kun',
-                'ru' => '3 день',
+                'ru' => 'ru 3 kun',
             ],
-            'sum' => 40000
+            'sum' => 40000,
         ]);
+
         DeliveryMethod::create([
             'name' => [
                 'uz' => 'Tez',
-                'ru' => 'Бистрей',
+                'ru' => 'ru Tez',
             ],
             'estimated_time' => [
                 'uz' => '1 kun',
-                'ru' => '1 день',
+                'ru' => 'ru 1 kun',
             ],
-            'sum' => 100000
+            'sum' => 80000,
         ]);
     }
 }

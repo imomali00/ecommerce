@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentCardType;
 use App\Http\Requests\StorePaymentCardTypeRequest;
 use App\Http\Requests\UpdatePaymentCardTypeRequest;
-use App\Models\PaymentCardType;
 
 class PaymentCardTypeController extends Controller
 {

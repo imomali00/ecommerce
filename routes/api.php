@@ -37,6 +37,8 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('change-password', [AuthController::class, 'changePassword']);
 Route::get('user', [AuthController::class, 'user'])->middleware('auth:sanctum');
 
+Route::get('products/{product}/related', [ProductController::class, 'related']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResources([
         'categories' => CategoryController::class,

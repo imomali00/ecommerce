@@ -8,26 +8,24 @@ use Illuminate\Database\Seeder;
 
 class UserAddressSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        User::find(1)->addresses()->create([
-            "latitude" => "45.310014",
-            "longitude" => "99.280742",
-            "region" => "Toshkent",
-            "district" => "Yashnaobod",
-            "street" => "Fargona yoli 27/2",
-            "home" => "29"
+        User::find(2)->addresses()->create([
+            "latitude" => "41.310014",
+            "longitude" => "69.280742",
+            "region" => "Tashkent",
+            "district" => "Mirabad Tuman",
+            "street" => "Mingurik Mahallah",
+            "home" => "777",
         ]);
-        User::find(1)->addresses()->create([
-            "latitude" => "45.310014",
-            "longitude" => "99.280742",
-            "region" => "Toshkent",
-            "district" => "Mirobod",
-            "street" => "Fargona yoli 27/1",
-            "home" => "20"
+
+        User::find(2)->addresses()->create([
+            "latitude" => "41.310014",
+            "longitude" => "69.280742",
+            "region" => "Tashkent",
+            "district" => "Mirzo. U Tuman",
+            "street" => "Navbahor Mahallah",
+            "home" => "123",
         ]);
     }
 }

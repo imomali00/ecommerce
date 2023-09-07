@@ -11,10 +11,9 @@ class Value extends Model
 {
     use HasFactory, HasTranslations;
 
+    protected $fillable = ["name", "added_price"];
+
     public array $translatable = ["name"];
-    protected $fillable = [
-        'name'
-    ];
 
     public function valueable(): BelongsTo
     {

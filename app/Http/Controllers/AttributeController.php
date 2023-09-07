@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attribute;
 use App\Http\Requests\StoreAttributeRequest;
 use App\Http\Requests\UpdateAttributeRequest;
-use App\Models\Attribute;
 
 class AttributeController extends Controller
 {

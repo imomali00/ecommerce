@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DeliveryMethod;
 use App\Http\Requests\StoreDeliveryMethodRequest;
 use App\Http\Requests\UpdateDeliveryMethodRequest;
-use App\Models\DeliveryMethod;
 use Illuminate\Database\Eloquent\Collection;
 
 class DeliveryMethodController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): Collection
     {
         return DeliveryMethod::all();

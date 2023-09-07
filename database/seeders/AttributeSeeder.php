@@ -13,14 +13,8 @@ class AttributeSeeder extends Seeder
      */
     public function run(): void
     {
-        Attribute::create([
-            'name' => 'size'
-        ]);
-        Attribute::create([
-            'name' => 'material'
-        ]);
-        Attribute::create([
-            'name' => 'color'
-        ]);
+        Attribute::create(["name" => "color"]);
+        Attribute::create(["name" => "material"]);
+        Attribute::create(["name" => "size"]);
     }
 }

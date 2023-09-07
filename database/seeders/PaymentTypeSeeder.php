@@ -8,39 +8,36 @@ use Illuminate\Database\Seeder;
 
 class PaymentTypeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         PaymentType::create([
             'name' => [
                 'uz' => 'Naxt',
-                'ru' => 'ru Naxt',
+                'ru' => 'Наличные'
             ]
         ]);
         PaymentType::create([
             'name' => [
                 'uz' => 'Terminal',
-                'ru' => 'Терминал',
-            ]
-        ]);
-        PaymentType::create([
-            'name' => [
-                'uz' => 'Pay me',
-                'ru' => 'Pay me',
+                'ru' => 'Terminal'
             ]
         ]);
         PaymentType::create([
             'name' => [
                 'uz' => 'Click',
-                'ru' => 'Click',
+                'ru' => 'Click'
+            ]
+        ]);
+        PaymentType::create([
+            'name' => [
+                'uz' => 'Payme',
+                'ru' => 'Payme'
             ]
         ]);
         PaymentType::create([
             'name' => [
                 'uz' => 'Uzum',
-                'ru' => 'Uzum',
+                'ru' => 'Uzum'
             ]
         ]);
     }

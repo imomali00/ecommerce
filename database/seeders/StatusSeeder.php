@@ -16,98 +16,114 @@ class StatusSeeder extends Seeder
         Status::create([
             'name' => [
                 'uz' => 'Yangi',
-                'ru' => 'Noviy'
+                'ru' => 'Yangi'
             ],
             'code' => 'new',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
                 'uz' => 'Tasdiqlandi',
-                'ru' => 'ru-Tasdiqlandi'
+                'ru' => 'Tasdiqlandi'
             ],
             'code' => 'confirmed',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
                 'uz' => 'Ishlanyapti',
-                'ru' => 'ru-Ishlanyapti'
+                'ru' => 'Ishlanyapti'
             ],
             'code' => 'processing',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
-                'uz' => 'Yetkazib berilmoqda',
-                'ru' => 'ru-Yetkazib berilmoqda'
+                'uz' => 'Yetkazib berilyapti',
+                'ru' => 'Yetkazib berilyapti'
             ],
             'code' => 'shipping',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
                 'uz' => 'Yetkazib berildi',
-                'ru' => 'ru-Yetkazib berildi'
+                'ru' => 'Yetkazib berildi'
             ],
             'code' => 'delivered',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
                 'uz' => 'Tugatildi',
-                'ru' => 'ru-Tugatildi'
+                'ru' => 'Tugatildi'
             ],
             'code' => 'completed',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
                 'uz' => 'Yopildi',
-                'ru' => 'ru-Yopildi'
+                'ru' => 'Yopildi'
             ],
             'code' => 'closed',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
                 'uz' => 'Bekor qilindi',
-                'ru' => 'ru-Bekor qilindi'
+                'ru' => 'Bekor qilindi'
             ],
             'code' => 'canceled',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
-                'uz' => 'Qaytatib berildi',
-                'ru' => 'ru-Qaytatib berildi'
+                'uz' => 'Qaytarib berildi',
+                'ru' => 'Qaytarib berildi'
             ],
             'code' => 'refunded',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
-                'uz' => "To'lov kutilmoqda",
-                'ru' => "ru-To'lov kutilmoqda"
+                'uz' => 'To\'lov kutilmoqda',
+                'ru' => 'To\'lov kutilmoqda'
             ],
             'code' => 'waiting_payment',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
-                'uz' => "To'landi",
-                'ru' => "ru-To'landi"
+                'uz' => 'To\'landi',
+                'ru' => 'To\'landi'
             ],
             'code' => 'paid',
             'for' => 'order'
         ]);
+
         Status::create([
             'name' => [
-                'uz' => "To'lovda Xato",
-                'ru' => "ru-To'lovda Xato"
+                'uz' => 'To\'lovda Xato',
+                'ru' => 'To\'lovda Xato'
             ],
             'code' => 'payment_error',
             'for' => 'order'
         ]);
+
+
+
+
+
     }
 }

@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use App\Http\Requests\StoreStatusRequest;
 use App\Http\Requests\UpdateStatusRequest;
-use App\Models\Status;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
-class  StatusController extends Controller
+class StatusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): Collection
+    public function __construct()
     {
+        $this->middleware('auth:sanctum');
+    }
+
+
+
+    public function index(Request $request)
+    {
+        if ($request->has('for')){
+            return Status::where('for', $request['for'])->get();
+        }
+
         return Status::all();
     }
 

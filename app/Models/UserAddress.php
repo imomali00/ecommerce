@@ -11,9 +11,9 @@ class UserAddress extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'latitude',
         'longitude',
-        'region',
         'region',
         'district',
         'street',

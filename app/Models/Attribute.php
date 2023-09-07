@@ -10,9 +10,7 @@ class Attribute extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name'
-    ];
+    protected $fillable = ["name"];
 
     public function values(): MorphMany
     {

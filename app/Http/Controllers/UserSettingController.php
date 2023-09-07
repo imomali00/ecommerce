@@ -2,57 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserSettingRequest;
-use App\Http\Requests\UpdateUserSettingRequest;
 use App\Http\Resources\UserSettingResource;
 use App\Models\UserSetting;
+use App\Http\Requests\StoreUserSettingRequest;
+use App\Http\Requests\UpdateUserSettingRequest;
 
 class UserSettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function index()
     {
         return $this->response(UserSettingResource::collection(auth()->user()->settings));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreUserSettingRequest $request)
     {
-        if (auth()->user()->settings()->where('setting_id', $request->setting_id)->exists()) {
-            return $this->error('Setting already exist!!!');
+        if (auth()->user()->settings()->where('setting_id', $request->setting_id)->exists()){
+            return $this->error('setting already exists');
         }
+
         $userSetting = auth()->user()->settings()->create([
             'setting_id' => $request->setting_id,
             'value_id' => $request->value_id ?? null,
-            'switch' => $request->switch
+            'switch' => $request->switch ?? null,
         ]);
 
-        return $this->success('User setting created successfully', $userSetting);
+        return $this->success('user setting created', $userSetting);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
+
     public function update(UpdateUserSettingRequest $request, UserSetting $userSetting)
     {
         $userSetting->update([
-            'switch' => $request->switch,
-            'value_id' => $request->value_id,
+            'switch' => $request->switch ?? null,
+            'value_id' => $request->value_id ?? null,
         ]);
 
-        return $this->success('User Setting successfully updated');
+        return $this->success('user setting updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(UserSetting $userSetting)
     {
         $userSetting->delete();
-        return $this->success('User setting deleted!');
+
+        return $this->success('user setting deleted');
     }
 }

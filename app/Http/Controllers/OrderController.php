@@ -2,44 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\ProductResource;
 use App\Models\DeliveryMethod;
 use App\Models\Order;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\UserAddress;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+        $this->authorizeResource(Order::class, 'order');
+    }
+
+
     public function index(): JsonResponse
     {
-        if (request()->has('status_id')) {
-            return $this->response([
-                OrderResource::collection(auth()->user()->orders()->where('status_id',
-                    request('status_id'))->paginate(10))
-            ]);
+        if (request()->has('status_id')){
+            return $this->response(OrderResource::collection(
+                auth()->user()->orders()->where('status_id', request('status_id'))->paginate(10)
+            ));
         }
-        return $this->response([OrderResource::collection(auth()->user()->orders()->paginate(10))]);
+
+        return $this->response(OrderResource::collection(
+            auth()->user()->orders()->paginate(10)
+        ));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(StoreOrderRequest $request)
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreOrderRequest $request): JsonResponse
     {
         $sum = 0;
@@ -72,6 +70,7 @@ class OrderController extends Controller
         }
 
         if ($notFoundProducts === [] && $products !== [] && $sum !== 0) {
+
             $sum += $deliveryMethod->sum;
 
             $order = auth()->user()->orders()->create([
@@ -90,20 +89,19 @@ class OrderController extends Controller
                     $stock->quantity -= $product['order_quantity'];
                     $stock->save();
                 }
-
-                // Return a success JSON response
             }
-            return $this->success('Order created', ['order' => $order,]);
+
+            return $this->success('order created', $order);
         } else {
-            return $this->error('Some products not found or do not have inventory',
-                ['not_found_products' => $notFoundProducts,]);
+            return $this->error(
+                'some products not found or does not have in inventory',
+                ['not_found_products' => $notFoundProducts]
+            );
         }
+
     }
 
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Order $order): JsonResponse
     {
         return $this->response(new OrderResource($order));
@@ -130,6 +128,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return 1;
     }
 }

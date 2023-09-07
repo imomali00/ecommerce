@@ -18,11 +18,7 @@ class DeliveryMethod extends Model
         'sum',
     ];
 
-    public array $translatable = [
-        'name',
-        'estimated_time',
-    ];
-
+    public array $translatable = ["name", "estimated_time"];
 
     public function orders(): HasMany
     {

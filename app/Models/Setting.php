@@ -11,8 +11,9 @@ class Setting extends Model
 {
     use HasFactory, HasTranslations;
 
-    public array $translatable = ["name"];
     protected $guarded = [];
+
+    public array $translatable = ["name"];
 
     public function values(): MorphMany
     {

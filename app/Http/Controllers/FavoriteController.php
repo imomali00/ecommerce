@@ -7,37 +7,38 @@ use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function index()
     {
         return auth()->user()->favorites()->paginate(20);
     }
 
+
     public function store(Request $request): JsonResponse
     {
-//         auth()->user()->favorites()->attach($request->product_id);
+        auth()->user()->favorites()->attach($request->product_id);
 
-         if(auth()->user()->favorites()->attach($request->product_id)){
-             return $this->success();
-         } else {
-             return $this->error();
-         }
-
-//         return response()->json([
-//             'message' => 'success'
-//         ]);
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
+
     /*
-     * TODO refactor response. make standard format
-     */
-    public function destroy($favorite_id)
+     * TODO refactor responses. make standart format
+     * */
+    public function destroy($favorite_id): JsonResponse
     {
-        if (auth()->user()->hasFavorites($favorite_id)) {
+        if (auth()->user()->hasFavorite($favorite_id)){
             auth()->user()->favorites()->detach($favorite_id);
 
-            return $this->success();
+            return response()->json(['success' => true]);
         }
 
-        return $this->error('favorite doesn\'t exist this user');
+        return response()->json(['success' => false, 'message' => 'Favorite does not exist in this user']);
     }
 }

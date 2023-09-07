@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChangeOrderStatusRequest;
 use App\Models\Order;
 use App\Models\Status;
-use Illuminate\Http\Request;
 
 class StatusOrderController extends Controller
 {
@@ -15,6 +14,6 @@ class StatusOrderController extends Controller
 
         $order->update(['status_id' => $status->id]);
 
-        return $request;
+        return response(['success' => true, 'message' => 'status changed']);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Value;
 use App\Http\Requests\StoreValueRequest;
 use App\Http\Requests\UpdateValueRequest;
-use App\Models\Value;
 
 class ValueController extends Controller
 {

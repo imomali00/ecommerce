@@ -12,9 +12,11 @@ class PaymentType extends Model
 {
     use HasFactory, HasTranslations, SoftDeletes;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+    ];
 
-    public array $translatable = ['name'];
+    public array $translatable = ["name"];
 
     public function orders(): HasMany
     {

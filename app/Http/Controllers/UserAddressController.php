@@ -2,36 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserAddress;
 use App\Http\Requests\StoreUserAddressRequest;
 use App\Http\Requests\UpdateUserAddressRequest;
-use App\Models\UserAddress;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class UserAddressController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function index(): JsonResponse
     {
         return $this->response(auth()->user()->addresses);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreUserAddressRequest $request): JsonResponse
     {
-       $address =  auth()->user()->addresses()->create($request->toArray());
-        return $this->success('Shipping address created successfully', $address);
+        $address = auth()->user()->addresses()->create($request->toArray());
+
+        return $this->success('shipping address created', $address);
     }
 
     /**
@@ -42,13 +36,6 @@ class UserAddressController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(UserAddress $userAddress)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

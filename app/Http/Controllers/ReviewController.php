@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
-use App\Models\Review;
+use Illuminate\Http\JsonResponse;
 
 class ReviewController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     /**
      * Display a listing of the resource.
      */
