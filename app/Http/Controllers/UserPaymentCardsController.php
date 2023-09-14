@@ -2,24 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserPaymentCardsRequest;
 use App\Http\Resources\UserPaymentCardResource;
 use App\Models\UserPaymentCards;
-use App\Http\Requests\StoreUserPaymentCardsRequest;
-use App\Http\Requests\UpdateUserPaymentCardsRequest;
-use Illuminate\Support\Facades\Crypt;
 
 class UserPaymentCardsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
-
     public function index()
     {
         return $this->response(UserPaymentCardResource::collection(auth()->user()->paymentCards));
     }
-
 
 
     public function store(StoreUserPaymentCardsRequest $request)

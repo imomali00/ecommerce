@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
-use function PHPUnit\Framework\returnArgument;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum')->except(['index','show']);
-    }
 
     public function index()
     {
@@ -29,7 +24,7 @@ class ProductController extends Controller
 
         return $this->success('product created', new ProductResource($product));
     }
-
+ 
 
     public function show(Product $product)
     {

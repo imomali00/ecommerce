@@ -15,6 +15,14 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        if ($this->getDiscount()) {
+            if ($this->discount->sum) {
+                $disPrice = $this->price - $this->discount->sum;
+            } elseif ($this->discount->percent) {
+                $disPrice = round($this->price * ((100 - $this->discount->percent) / 100));
+            }
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
@@ -25,6 +33,9 @@ class ProductResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'order_quantity' => $this->when(isset($this->quantity), $this->quantity),
+            'photos' => PhotoResource::collection($this->photos),
+            'discount' => $this->getDiscount(),
+            'discount_price' => $disPrice ?? null,
         ];
     }
 }

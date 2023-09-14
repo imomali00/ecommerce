@@ -8,20 +8,11 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
-class ProductPhotoContoller extends Controller
+class ProductPhotoController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
-
-    public function index(Product $product)
-    {
-        return $this->response($product->photos);
-    }
-
     public function store(StoreProductPhotoRequest $request, Product $product)
     {
+//        dd($request->photos);
         foreach ($request->photos as $photo) {
             $path = $photo->store('products/'.$product->id, 'public');
             $fullName = $photo->getClientOriginalName();
@@ -31,10 +22,8 @@ class ProductPhotoContoller extends Controller
                 'path' => $path
             ]);
         }
-
         return $this->success('photos added');
     }
-
 
     public function destroy(Product $product, Photo $photo)
     {

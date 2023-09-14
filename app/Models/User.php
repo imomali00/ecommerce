@@ -77,4 +77,9 @@ class User extends Authenticatable
         return $this->hasMany(UserPaymentCards::class);
     }
 
+    public function photos()
+    {
+        return $this->morphMany(Photo::class, 'photoable');
+    }
+
 }

@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Order;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class OrderPolicy
 {
@@ -13,7 +12,7 @@ class OrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +20,7 @@ class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        //
+        return $order->user_id === $user->id;
     }
 
     /**
@@ -29,7 +28,7 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole('customer') || $user->can('order:create');
     }
 
     /**
@@ -37,7 +36,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        //
+        return $order->user_id === $user->id || $user->can('order:update');
     }
 
     /**
@@ -45,7 +44,11 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order): bool
     {
-        //
+        if ($user->hasRole('customer')) {
+            return $order->user_id === $user->id && $order->status_id === 1;
+        } else {
+            return $user->can('order:delete');
+        }
     }
 
     /**
@@ -53,7 +56,7 @@ class OrderPolicy
      */
     public function restore(User $user, Order $order): bool
     {
-        //
+        return $user->can('order:restore');
     }
 
     /**
@@ -61,6 +64,6 @@ class OrderPolicy
      */
     public function forceDelete(User $user, Order $order): bool
     {
-        //
+        return $user->can('order:forceDelete');
     }
 }

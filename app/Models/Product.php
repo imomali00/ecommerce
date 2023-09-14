@@ -16,6 +16,7 @@ class Product extends Model
 {
     use HasFactory, HasTranslations, SoftDeletes;
 
+    public array $translatable = ["name", "description"];
     protected $fillable = [
         "category_id",
         "name",
@@ -23,23 +24,20 @@ class Product extends Model
         "description",
     ];
 
-    public array $translatable = ["name", "description"];
-
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function stocks(): HasMany
-    {
-        return $this->hasMany(Stock::class);
     }
 
     public function withStock($stockId): static
     {
         $this->stocks = [$this->stocks()->findOrFail($stockId)];
         return $this;
+    }
+
+    public function stocks(): HasMany
+    {
+        return $this->hasMany(Stock::class);
     }
 
     public function users(): BelongsToMany
@@ -56,6 +54,7 @@ class Product extends Model
     {
         return $this->morphMany(Photo::class, 'photoable');
     }
+
 
     public function discount()
     {

@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->foreignId('status_id')->default(1)->constrained();
             $table->text('address')->nullable();
             $table->json('products');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
