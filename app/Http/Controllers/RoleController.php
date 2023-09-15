@@ -4,26 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AssignRoleToUserRequest;
 use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
         $this->authorizeResource(Role::class, 'role');
     }
 
 
-    public function index()
+    public function index(): JsonResponse
     {
         return $this->response(Role::all());
     }
 
 
-    public function store(StoreRoleRequest $request)
+    public function store(StoreR oleRequest $request): JsonResponse
     {
         $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
 
@@ -31,25 +30,7 @@ class RoleController extends Controller
     }
 
 
-    public function show(Role $role)
-    {
-        //
-    }
-
-
-    public function update(UpdateRoleRequest $request, Role $role)
-    {
-        //
-    }
-
-
-    public function destroy(Role $role)
-    {
-        //
-    }
-
-
-    public function assign(AssignRoleToUserRequest $request)
+    public function assign(AssignRoleToUserRequest $request): JsonResponse
     {
         $user = User::findOrFail($request->user_id);
         $role = Role::findOrFail($request->role_id);

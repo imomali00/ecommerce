@@ -2,27 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserSettingResource;
-use App\Models\UserSetting;
 use App\Http\Requests\StoreUserSettingRequest;
 use App\Http\Requests\UpdateUserSettingRequest;
+use App\Http\Resources\UserSettingResource;
+use App\Models\UserSetting;
+use Illuminate\Http\JsonResponse;
 
 class UserSettingController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
-
-    public function index()
+    public function index(): JsonResponse
     {
         return $this->response(UserSettingResource::collection(auth()->user()->settings));
     }
 
 
-    public function store(StoreUserSettingRequest $request)
+    public function store(StoreUserSettingRequest $request): JsonResponse
     {
-        if (auth()->user()->settings()->where('setting_id', $request->setting_id)->exists()){
+        if (auth()->user()->settings()->where('setting_id', $request->setting_id)->exists()) {
             return $this->error('setting already exists');
         }
 
@@ -36,8 +32,7 @@ class UserSettingController extends Controller
     }
 
 
-
-    public function update(UpdateUserSettingRequest $request, UserSetting $userSetting)
+    public function update(UpdateUserSettingRequest $request, UserSetting $userSetting): JsonResponse
     {
         $userSetting->update([
             'switch' => $request->switch ?? null,
@@ -48,7 +43,7 @@ class UserSettingController extends Controller
     }
 
 
-    public function destroy(UserSetting $userSetting)
+    public function destroy(UserSetting $userSetting): JsonResponse
     {
         $userSetting->delete();
 

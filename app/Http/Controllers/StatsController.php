@@ -4,24 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\DeliveryMethod;
 use App\Models\Order;
-use App\Models\User;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\LazyCollection;
 
 class StatsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
-
-    /**
-     * Count the number of orders
-     */
-    public function ordersCount(Request $request)
+    public function ordersCount(Request $request): JsonResponse
     {
         $from = Carbon::now()->subMonth();
         $to = Carbon::now();
@@ -40,7 +32,7 @@ class StatsController extends Controller
     }
 
 
-    public function ordersSalesSum(Request $request)
+    public function ordersSalesSum(Request $request): JsonResponse
     {
         $from = Carbon::now()->subMonth();
         $to = Carbon::now();
@@ -59,7 +51,7 @@ class StatsController extends Controller
     }
 
 
-    public function deliveryMethodsRatio(Request $request)
+    public function deliveryMethodsRatio(Request $request): JsonResponse
     {
         $from = Carbon::now()->subMonth();
         $to = Carbon::now();
@@ -93,7 +85,7 @@ class StatsController extends Controller
     }
 
 
-    public function ordersCountByDays(Request $request)
+    public function ordersCountByDays(Request $request): JsonResponse
     {
         $from = Carbon::now()->subMonth();
         $to = Carbon::now();

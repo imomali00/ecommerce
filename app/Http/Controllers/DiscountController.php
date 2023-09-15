@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Discount;
 use App\Http\Requests\StoreDiscountRequest;
 use App\Http\Requests\UpdateDiscountRequest;
+use App\Models\Discount;
 
 class DiscountController extends Controller
 {
@@ -16,7 +16,7 @@ class DiscountController extends Controller
 
     public function store(StoreDiscountRequest $request)
     {
-        if (Discount::query()->where('product_id', $request->product_id)->exists()){
+        if (Discount::query()->where('product_id', $request->product_id)->exists()) {
             return $this->error('discount already exists in this product');
         }
 
@@ -24,13 +24,6 @@ class DiscountController extends Controller
 
         return $this->success('discount created', $discount);
     }
-
-
-    public function show(Discount $discount)
-    {
-        //
-    }
-
 
     public function update(UpdateDiscountRequest $request, Discount $discount)
     {

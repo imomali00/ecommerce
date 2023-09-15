@@ -10,14 +10,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
     /**
      * @throws ValidationException
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $user = User::where('email', $request->email)->first();
 
@@ -34,20 +33,26 @@ class AuthController extends Controller
     }
 
 
-    public function logout()
+    public function logout(Request $request): JsonResponse
     {
+        $request->user()->tokens()->delete();
 
+        return response()->json(['message' => 'Logged out successfully']);
     }
 
+    public function user(Request $request): JsonResponse
+    {
+        return $this->response(new UserResource($request->user()));
+    }
 
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): JsonResponse
     {
         $data = $request->validated();
         $data['password'] = Hash::make($request->password);
         $user = User::create($data);
         $user->assignRole('customer');
 
-        if ($request->hasFile('photo')){
+        if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('users/'.$user->id, 'public');
             $user->photos()->create([
                 'full_name' => $request->file('photo')->getClientOriginalName(),
@@ -61,14 +66,23 @@ class AuthController extends Controller
         );
     }
 
-    public function changePassword()
+    public function changePassword(Request $request): JsonResponse
     {
+        $user = $request->user();
 
-    }
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'new_password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
 
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['message' => 'Current password is incorrect'], 401);
+        }
 
-    public function user(Request $request)
-    {
-        return $this->response(new UserResource($request->user()));
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return response()->json(['message' => 'Password changed successfully']);
     }
 }

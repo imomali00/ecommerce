@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserPaymentCardsRequest;
 use App\Http\Resources\UserPaymentCardResource;
-use App\Models\UserPaymentCards;
+use Illuminate\Http\JsonResponse;
 
 class UserPaymentCardsController extends Controller
 {
@@ -14,7 +14,7 @@ class UserPaymentCardsController extends Controller
     }
 
 
-    public function store(StoreUserPaymentCardsRequest $request)
+    public function store(StoreUserPaymentCardsRequest $request): JsonResponse
     {
         $card = auth()->user()->paymentCards()->create([
             "name" => encrypt($request->name),
@@ -26,21 +26,5 @@ class UserPaymentCardsController extends Controller
         ]);
 
         return $this->success('card added');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(UserPaymentCards $userPaymentCards)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(UserPaymentCards $userPaymentCards)
-    {
-        //
     }
 }
