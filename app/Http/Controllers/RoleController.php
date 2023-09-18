@@ -22,7 +22,7 @@ class RoleController extends Controller
     }
 
 
-    public function store(StoreR oleRequest $request): JsonResponse
+    public function store(StoreRoleRequest $request): JsonResponse
     {
         $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
 
